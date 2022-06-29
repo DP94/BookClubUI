@@ -5,7 +5,7 @@ import Book from '../components/Book.vue'
 
 let books = ref([]);
 
-axios.get("https://j1vgis0ta7.execute-api.eu-west-2.amazonaws.com/Prod/v1/Book/").then(response => {
+axios.get(`${import.meta.env.VITE_API_URL}v1/Book/`).then(response => {
   books.value = response.data;
 });
 
