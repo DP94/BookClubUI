@@ -18,7 +18,7 @@ export default {
 <template>
   <div class="book-info">
     <div class="book-lock-container">
-      <font-awesome-icon icon="fa fa-lock" class="book-lock"/>
+      <i class="fa fa-lock book-lock"/>
     </div>
     <img class="book-image" :src="getBookImage()"/>
     <h1 class="book-title">{{ name }}</h1>
