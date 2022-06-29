@@ -46,16 +46,19 @@ export default {
 
 .book-lock-container {
   position: absolute;
-  height: 63%;
-  width: 79%;
   background: #8080809e;
+}
+
+.book-image, .book-lock-container {
+  height: 350px;
+  width: 250px;
 }
 
 .book-lock {
   font-size: 90px;
   position: absolute;
-  top: 34%;
-  left: 32%;
+  top: 38%;
+  left: 35%;
   color: black;
 }
 </style>
