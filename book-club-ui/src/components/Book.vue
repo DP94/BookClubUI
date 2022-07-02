@@ -1,7 +1,10 @@
 <script>
 
+import router from "@/router";
+
 export default {
   props: [
+    'id',
     'name',
     'bookImage'
   ],
@@ -9,6 +12,10 @@ export default {
   methods: {
     getBookImage() {
       return this.$props.bookImage
+    },
+
+    openBook() {
+      router.push({path: '/book', query: {id: this.$props.id}});
     }
   }
 }
@@ -16,7 +23,7 @@ export default {
 
 
 <template>
-  <div class="book-info">
+  <div class="book-info" @click="openBook">
     <div class="book-lock-container">
       <i class="fa fa-lock book-lock"/>
     </div>
@@ -31,6 +38,7 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
+  cursor: pointer;
 }
 
 .book-image {
