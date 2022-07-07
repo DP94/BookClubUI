@@ -3,10 +3,12 @@
 import router from "@/router";
 
 export default {
-  props: [
+  props: [ 
     'id',
     'name',
-    'bookImage'
+    'bookImage',
+    'summary',
+    'author'
   ],
 
   methods: {
@@ -29,7 +31,7 @@ export default {
     </div>
     <img class="book-image" :src="getBookImage()"/>
     <h1 class="book-title">{{ name }}</h1>
-    <span class="meme-count">0 memes</span>
+    <span class="meme-count">4 memes</span>
   </div>
 </template>
 
