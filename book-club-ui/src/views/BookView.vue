@@ -16,6 +16,15 @@ export default {
       axios.get(`${import.meta.env.VITE_API_URL}v1/Book/${this.$route.query.id}`).then(response => {
         this.book = response.data;
       });
+    },
+    onFileChanged(e) {
+      const formData = new FormData();
+      formData.append('file', e.target.files[0]);
+      axios.post(`${import.meta.env.VITE_API_URL}v1/Book/${this.$route.query.id}/meme`, formData, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      });
     }
   },
   created() {
@@ -52,9 +61,10 @@ export default {
     </div>
   </div>
   <hr class="book-meme-divider">
-  <h1 style="text-align: center;">Memes for {{ book.name }}</h1>
+  <h1 v-if="book" style="text-align: center;">Memes for {{ book.name }}</h1>
   <div class="meme-upload">
-    <button>Upload new meme</button>
+    <input type="file" ref="file" style="display: none" @change="onFileChanged">
+    <button @click="$refs.file.click()">Upload new meme</button>
   </div>
   <div class="meme-container">
     <div class="book-meme">
@@ -98,7 +108,7 @@ export default {
 }
 
 .book-meme-divider {
-  width: 50%;
+  width: 80%;
   margin-top: 2%
 }
 
