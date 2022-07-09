@@ -57,7 +57,12 @@ export default {
           {{ this.book.summary }}
         </p>
         <span>
-          Author: {{ this.book.author }}
+          <b>
+          Author: 
+          </b> 
+        </span>
+        <span>
+          {{ this.book.author }}
         </span>
       </div>
       <div class="book-users-reading">
@@ -67,8 +72,8 @@ export default {
         Users finished reading this book: Ed, Thomas, Reece, Peter<i style="color:red;">*</i>
       </div>
       <div class="buttons">
-        <button>Mark as finished</button>
-        <button>Mark as reading</button>
+        <button class="book-reading-button" title="Mark as reading"><i class="fa fa-book-open"></i></button>
+        <button class="book-finished-button" title="Mark as finished"><i class="fa fa-square-check"></i></button>
       </div>
     </div>
   </div>
@@ -118,5 +123,16 @@ export default {
 
 .meme-upload {
   text-align: center;
+}
+
+.buttons button {
+  border: none;
+  font-size: 50px;
+  cursor: pointer;
+  padding: 2%;
+}
+
+.book-finished-button {
+  color: green;
 }
 </style>
