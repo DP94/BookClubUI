@@ -8,7 +8,8 @@ export default {
     'name',
     'bookImage',
     'summary',
-    'author'
+    'author',
+    'memeCount'
   ],
 
   methods: {
@@ -31,7 +32,7 @@ export default {
     </div>
     <img class="book-image" :src="getBookImage()"/>
     <h1 class="book-title">{{ name }}</h1>
-    <span class="meme-count">4 memes</span>
+    <span class="meme-count">{{ memeCount > 0 ? memeCount : "No" }} memes</span>
   </div>
 </template>
 

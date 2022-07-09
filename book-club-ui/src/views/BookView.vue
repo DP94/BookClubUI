@@ -3,18 +3,27 @@ import Navbar from "@/components/Navbar.vue";
 import axios from "axios";
 import {ref} from 'vue'
 import Book from '../components/Book.vue'
+import Meme from "../components/Meme.vue";
 
 export default {
   name: "BookView",
-  components: {Book, Navbar},
+  components: {Meme, Book, Navbar},
   setup() {
     let book = ref();
-    return {book}
+    let memes = ref([]);
+    return {book, memes}
   },
   methods: {
     getBook() {
       axios.get(`${import.meta.env.VITE_API_URL}v1/Book/${this.$route.query.id}`).then(response => {
         this.book = response.data;
+        this.getMemesForBook();
+      });
+    },
+    getMemesForBook() {
+      axios.get(`${import.meta.env.VITE_API_URL}v1/Book/${this.$route.query.id}/meme`).then(response => {
+        this.memes = response.data;
+        this.book.memeCount = this.memes.length;
       });
     },
     onFileChanged(e) {
@@ -24,6 +33,9 @@ export default {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         }
+      }).then(response => {
+        this.memes.push(response.data);
+        this.book.memeCount++;
       });
     }
   },
@@ -37,7 +49,7 @@ export default {
   <Navbar/>
   <div class="book-info-container" v-if="book">
     <Book v-bind:name="book.name" v-bind:bookImage="book.imageSource" v-bind:id="book.id" v-bind:summary="book.summary"
-          v-bind:author="book.author"></Book>
+          v-bind:author="book.author" v-bind:memeCount="memes.length"></Book>
     <div class="book-summary-container">
       <div class="book-summary">
         <h3>Summary</h3>
@@ -63,26 +75,11 @@ export default {
   <hr class="book-meme-divider">
   <h1 v-if="book" style="text-align: center;">Memes for {{ book.name }}</h1>
   <div class="meme-upload">
-    <input type="file" ref="file" style="display: none" @change="onFileChanged">
+    <input type="file" ref="file" style="display: none" @change="onFileChanged" accept="image/*">
     <button @click="$refs.file.click()">Upload new meme</button>
   </div>
   <div class="meme-container">
-    <div class="book-meme">
-      <img src="https://media0.giphy.com/media/kYsBThMhhalLG/200.gif"/>
-      <span>Uploaded by: Dan</span>
-    </div>
-    <div class="book-meme">
-      <img src="https://media0.giphy.com/media/kYsBThMhhalLG/200.gif"/>
-      <span>Uploaded by: Dan</span>
-    </div>
-    <div class="book-meme">
-      <img src="https://media0.giphy.com/media/kYsBThMhhalLG/200.gif"/>
-      <span>Uploaded by: Dan</span>
-    </div>
-    <div class="book-meme">
-      <img src="https://media0.giphy.com/media/kYsBThMhhalLG/200.gif"/>
-      <span>Uploaded by: Dan</span>
-    </div>
+    <Meme v-bind:memeImage="meme.s3URL" v-for="meme in memes"></Meme>
   </div>
 </template>
 
@@ -117,13 +114,6 @@ export default {
   justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;
-}
-
-.book-meme {
-  padding: 10px;
-  display: flex;
-  text-align: center;
-  flex-direction: column;
 }
 
 .meme-upload {
