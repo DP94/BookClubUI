@@ -30,9 +30,9 @@ export default {
     <div class="book-lock-container">
       <i class="fa fa-lock book-lock"/>
     </div>
-    <img class="book-image" :src="getBookImage()"/>
+    <img class="book-image" :src="getBookImage()" alt="{{name}}"/>
     <h1 class="book-title">{{ name }}</h1>
-    <span class="meme-count">{{ memeCount > 0 ? memeCount : "No" }} memes</span>
+    <span class="meme-count">{{ memeCount > 0 ? memeCount : "No" }} meme{{ memeCount === 1 ? "" : "s" }}</span>
   </div>
 </template>
 

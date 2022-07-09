@@ -4,14 +4,16 @@ import axios from "axios";
 import {ref} from 'vue'
 import Book from '../components/Book.vue'
 import Meme from "../components/Meme.vue";
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
 export default {
   name: "BookView",
-  components: {Meme, Book, Navbar},
+  components: {LoadingSpinner, Meme, Book, Navbar},
   setup() {
     let book = ref();
     let memes = ref([]);
-    return {book, memes}
+    let loading = ref();
+    return {book, memes, loading}
   },
   methods: {
     getBook() {
@@ -24,9 +26,11 @@ export default {
       axios.get(`${import.meta.env.VITE_API_URL}v1/Book/${this.$route.query.id}/meme`).then(response => {
         this.memes = response.data;
         this.book.memeCount = this.memes.length;
+        this.loading = false;
       });
     },
     onFileChanged(e) {
+      this.loading = true;
       const formData = new FormData();
       formData.append('file', e.target.files[0]);
       axios.post(`${import.meta.env.VITE_API_URL}v1/Book/${this.$route.query.id}/meme`, formData, {
@@ -36,10 +40,12 @@ export default {
       }).then(response => {
         this.memes.push(response.data);
         this.book.memeCount++;
+        this.loading = false;
       });
     }
   },
   created() {
+    this.loading = true;
     this.getBook();
   }
 }
@@ -47,6 +53,7 @@ export default {
 
 <template>
   <Navbar/>
+  <LoadingSpinner v-bind:loading="loading"></LoadingSpinner>
   <div class="book-info-container" v-if="book">
     <Book v-bind:name="book.name" v-bind:bookImage="book.imageSource" v-bind:id="book.id" v-bind:summary="book.summary"
           v-bind:author="book.author" v-bind:memeCount="memes.length"></Book>
