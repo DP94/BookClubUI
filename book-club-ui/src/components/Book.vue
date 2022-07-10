@@ -53,6 +53,7 @@ export default {
   overflow-wrap: break-word;
   inline-size: 230px;
   text-align: center;
+  font-size: 32px;
 }
 
 .book-lock-container {
