@@ -52,7 +52,6 @@ export default {
 </script>
 
 <template>
-  <Navbar/>
   <LoadingSpinner v-bind:loading="loading"></LoadingSpinner>
   <div class="book-info-container" v-if="book">
     <Book v-bind:name="book.name" v-bind:bookImage="book.imageSource" v-bind:id="book.id" v-bind:summary="book.summary"

@@ -1,20 +1,32 @@
 <template>
   <div class="topnav">
-    <a class="active" href="/">Home</a>
-    <a href="users">Users</a>
-    <a class="nav-sign-out">Sign out</a>
+    <router-link :class="{active : isActive(1)}" to="/" @click="setActiveTab(1)">Home</router-link>
+    <router-link :class="{active : isActive(2)}" to="/users" @click="setActiveTab(2)">Users</router-link>
+    <router-link :class="{active : isActive(3)}" class="nav-register" to="/register" @click="setActiveTab(3)">Register
+    </router-link>
   </div>
 </template>
 
-<script>
-export default {
-  name: "Navbar"
+<script lang="ts">
+import {Vue, Options} from 'vue-class-component';
+
+@Options()
+export default class Navbar extends Vue {
+  currentTabIndex = 0;
+
+  setActiveTab(index: number) {
+    this.currentTabIndex = index;
+  }
+
+  isActive(index: number) {
+    return index === this.currentTabIndex;
+  }
 }
 </script>
 
 <style scoped>
 .topnav {
-  background-color: #476479 ;
+  background-color: #476479;
   overflow: hidden;
   border-bottom: 2px solid #b78f0a;
 }
@@ -41,7 +53,7 @@ export default {
   color: white;
 }
 
-.nav-sign-out {
+.nav-register {
   float: right !important;
 }
 </style>

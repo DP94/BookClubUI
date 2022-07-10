@@ -16,15 +16,12 @@ axios.get(`${import.meta.env.VITE_API_URL}v1/Book/`).then(response => {
 </script>
 
 <template>
-  <main>
-    <Navbar></Navbar>
-    <LoadingSpinner v-bind:loading="loading"></LoadingSpinner>
-    <div class="book-container">
-      <div class="book" v-for="item in books">
-        <Book v-bind:name="item.name" v-bind:bookImage="item.imageSource" v-bind:id="item.id"></Book>
-      </div>
+  <LoadingSpinner v-bind:loading="loading"></LoadingSpinner>
+  <div class="book-container">
+    <div class="book" v-for="item in books">
+      <Book v-bind:name="item.name" v-bind:bookImage="item.imageSource" v-bind:id="item.id"></Book>
     </div>
-  </main>
+  </div>
 </template>
 
 
