@@ -1,45 +1,33 @@
-<script setup lang="ts">
-import {FormKit} from "@formkit/vue";
+<script lang="ts">
+
+import {Options, Vue} from "vue-class-component";
+import {UserDto} from "@/dtos/user-dto";
+import {ref} from "vue";
+import {UserService} from "@/services/user-service";
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
+import UserForm from "@/components/form/UserForm.vue";
+@Options({
+  components: {UserForm, LoadingSpinner}
+})
+export default class RegisterView extends Vue {
+  loading: boolean = ref();
+  
+  async submitUserForm() {
+    const userService = new UserService();
+    this.loading = true;
+    const user = this.$refs.userform.getUser();
+    const createdUser: UserDto = await userService.createUser(user);
+    this.loading = false;
+    this.$router.push({path: '/user', query: {id: createdUser.id}})
+  }
+}
+
 </script>
 
 <template>
+  <LoadingSpinner v-bind:loading="loading"></LoadingSpinner>
   <div class="form-container">
-
-
-    <FormKit type="form">
-      <FormKit
-          type="text"
-          label="Username"
-          name="username"
-          validation="required|username"
-      />
-      <FormKit
-          type="text"
-          label="Real name"
-          name="name"
-          validation="required|name"
-      />
-      <FormKit
-          type="text"
-          label="Your Email"
-          name="email"
-          prefix-icon="email"
-          placeholder="email@domain.com"
-          validation="required|email"
-      />
-      <FormKit
-          type="password"
-          label="Password"
-          validation="required|password"
-      />
-      <FormKit
-          type="select"
-          label="Loyalty"
-          name="loyalty"
-          placeholder="Praise the emperor?"
-          :options="['Loyalist', 'Traitor']"
-      />
-    </FormKit>
+    <UserForm v-on:submit="this.submitUserForm()" ref="userform"></UserForm>
   </div>
 </template>
 

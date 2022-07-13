@@ -16,6 +16,10 @@ export default {
     return {book, memes, loading}
   },
   methods: {
+    beforeRouteEnter(x, y, z) {
+      let i = 1;
+      z();
+    },
     getBook() {
       axios.get(`${import.meta.env.VITE_API_URL}v1/Book/${this.$route.query.id}`).then(response => {
         this.book = response.data;

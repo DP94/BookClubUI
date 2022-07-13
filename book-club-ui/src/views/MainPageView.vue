@@ -1,17 +1,35 @@
-<script setup lang="ts">
-import axios from 'axios';
+<script lang="ts">
 import {ref} from 'vue'
 import Book from '../components/Book.vue'
-import Navbar from "@/components/Navbar.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
+import {Options, Vue} from "vue-class-component";
+import {BookService} from "@/services/book-service";
 
-let books = ref([]);
 let loading = ref();
 loading.value = true;
-axios.get(`${import.meta.env.VITE_API_URL}v1/Book/`).then(response => {
-  books.value = response.data;
-  loading.value = false;
-});
+
+@Options({
+  components: {LoadingSpinner, Book},
+  name: "MainPageView", 
+  beforeRouteEnter: (to, from, next) => {
+    next(vm => {
+      vm.$emit('routeChange');
+    });
+  },
+  emits: ["routeChange"]
+})
+export default class MainPageView extends Vue {
+  
+  books: Array<any> = ref([]);
+  loading = ref();
+  
+  async created() {
+    const bookService = new BookService();
+    loading.value = true;
+    this.books = await bookService.getAllBooks();
+    loading.value = false;
+  }
+}
 
 </script>
 

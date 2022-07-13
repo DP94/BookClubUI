@@ -1,25 +1,41 @@
 <template>
   <div class="topnav">
-    <router-link :class="{active : isActive(1)}" to="/" @click="setActiveTab(1)">Home</router-link>
-    <router-link :class="{active : isActive(2)}" to="/users" @click="setActiveTab(2)">Users</router-link>
-    <router-link :class="{active : isActive(3)}" class="nav-register" to="/register" @click="setActiveTab(3)">Register
-    </router-link>
+    <router-link data-nav-name="books" to="/">Books</router-link>
+    <router-link data-nav-name="users" to="/users">Users</router-link>
+    <router-link data-nav-name="profile" to="/user" v-if="store.loggedIn">Profile</router-link>
+    <router-link data-nav-name="login" id="login" class="nav-register" to="/login" v-if="!store.loggedIn">Log in</router-link>
+    <a data-nav-name="logout" id="logout" class="nav-register" to="/login" @click="onLogout()" v-if="store.loggedIn">Log out</a>
+    <span class="nav-register" v-if="store.loggedIn">{{store.user.username}}</span>
   </div>
 </template>
 
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component';
+import {userStore} from "@/stores/user-store";
 
-@Options()
+@Options({
+  emits: ["loggedIn"]
+})
 export default class Navbar extends Vue {
-  currentTabIndex = 0;
-
-  setActiveTab(index: number) {
-    this.currentTabIndex = index;
+  
+  store = userStore();
+  
+  onLogout() {
+    this.store.$patch({ loggedIn: false});
+    this.$router.push('/login');
   }
-
-  isActive(index: number) {
-    return index === this.currentTabIndex;
+  
+  onChange() {
+    const routerValue = this.$router.currentRoute.value.name;
+    const navName = document.querySelector(`[data-nav-name="${routerValue}"]`)
+    if (navName === null) {
+      return;
+    }
+    const navBars = document.querySelectorAll('.topnav a')
+    navBars.forEach((nav) => {
+      nav.classList.remove('active');
+    })
+    navName.classList.add('active');
   }
 }
 </script>
@@ -32,7 +48,7 @@ export default class Navbar extends Vue {
 }
 
 /* Style the links inside the navigation bar */
-.topnav a {
+.topnav a, .topnav span {
   float: left;
   color: #dbdede;
   text-align: center;
