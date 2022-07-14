@@ -5,7 +5,7 @@ import {UserDto} from "@/dtos/user-dto";
 import {ref} from "vue";
 import {UserService} from "@/services/user-service";
 import {userStore} from "@/stores/user-store";
-import {storeToRefs} from "pinia";
+import {notify} from "@kyvg/vue3-notification";
 
 @Options({
   components: {LoadingSpinner},
@@ -23,10 +23,12 @@ export default class LoginView extends Vue {
     const userService = new UserService();
     const response = await userService.login(this.user.username, this.user.password);
     if (response !== null) {
-      const store = userStore();
-      store.$patch({ loggedIn: true})
-      store.$patch({ user: response})
-      this.$emit('loggedIn', true);
+      notify({
+        title: `Successfully logged in`,
+        text: `Welcome to BookClub ${response.username}`,
+        type: 'info',
+        duration: 3000
+      })
       this.$router.push('/');
     }
 

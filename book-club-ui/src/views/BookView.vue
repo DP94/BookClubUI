@@ -5,6 +5,7 @@ import {ref} from 'vue'
 import Book from '../components/Book.vue'
 import Meme from "../components/Meme.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
+import {BookService} from "@/services/book-service";
 
 export default {
   name: "BookView",
@@ -20,32 +21,26 @@ export default {
       let i = 1;
       z();
     },
-    getBook() {
-      axios.get(`${import.meta.env.VITE_API_URL}v1/Book/${this.$route.query.id}`).then(response => {
-        this.book = response.data;
-        this.getMemesForBook();
-      });
+    async getBook() {
+      const bookService = new BookService();
+      this.book = await bookService.getBookById(this.$route.query.id);
+      await this.getMemesForBook();
     },
-    getMemesForBook() {
-      axios.get(`${import.meta.env.VITE_API_URL}v1/Book/${this.$route.query.id}/meme`).then(response => {
-        this.memes = response.data;
-        this.book.memeCount = this.memes.length;
-        this.loading = false;
-      });
+    async getMemesForBook() {
+      const bookService = new BookService();
+      this.memes = await bookService.getBookMemes(this.$route.query.id);
+      this.book.memeCount = this.memes.length;
+      this.loading = false;
     },
     onFileChanged(e) {
       this.loading = true;
       const formData = new FormData();
       formData.append('file', e.target.files[0]);
-      axios.post(`${import.meta.env.VITE_API_URL}v1/Book/${this.$route.query.id}/meme`, formData, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      }).then(response => {
-        this.memes.push(response.data);
-        this.book.memeCount++;
-        this.loading = false;
-      });
+      const bookService = new BookService();
+      const response = bookService.createMemeForBook(this.$route.query.id, formData);
+      this.memes.push(response.data);
+      this.book.memeCount++;
+      this.loading = false;
     }
   },
   created() {

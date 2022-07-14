@@ -22,7 +22,7 @@ const router = createRouter({
       component: MainPageView,
       beforeEnter: (to, from, next) => {
         const store = userStore();
-        if (!store.loggedIn) {
+        if (!store.hasSession()) {
           next('/login')
         } else {
           next();
@@ -35,7 +35,7 @@ const router = createRouter({
       component: BookView,
       beforeEnter: (to, from, next) => {
         const store = userStore();
-        if (!store.loggedIn) {
+        if (!store.hasSession()) {
           next('/login')
         } else {
           next();
@@ -53,7 +53,7 @@ const router = createRouter({
       component: UserView,
       beforeEnter: (to, from, next) => {
         const store = userStore();
-        if (!store.loggedIn) {
+        if (!store.hasSession()) {
           next('/login')
         } else {
           next();
@@ -66,7 +66,7 @@ const router = createRouter({
       component: UsersView,
       beforeEnter: (to, from, next) => {
         const store = userStore();
-        if (!store.loggedIn) {
+        if (!store.hasSession()) {
           next('/login')
         } else {
           next();

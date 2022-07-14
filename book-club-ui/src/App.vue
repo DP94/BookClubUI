@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar.vue";
 
 <template>
   <Navbar ref="nav"></Navbar>
-  <RouterView @routeChange="this.$refs.nav.onChange()"/>
+  <RouterView/>
   <notifications position="top center"/>
 </template>
 

@@ -16,6 +16,7 @@ Vue.registerHooks(['beforeRouteEnter',
 
 const app = createApp(App);
 
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 app.use(createPinia());
 app.use(router);
 app.use(VueAxios, axios);
