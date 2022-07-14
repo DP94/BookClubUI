@@ -32,13 +32,13 @@ export default {
       this.book.memeCount = this.memes.length;
       this.loading = false;
     },
-    onFileChanged(e) {
+    async onFileChanged(e) {
       this.loading = true;
       const formData = new FormData();
       formData.append('file', e.target.files[0]);
       const bookService = new BookService();
-      const response = bookService.createMemeForBook(this.$route.query.id, formData);
-      this.memes.push(response.data);
+      const response = await bookService.createMemeForBook(this.$route.query.id, formData);
+      this.memes.push(response);
       this.book.memeCount++;
       this.loading = false;
     }

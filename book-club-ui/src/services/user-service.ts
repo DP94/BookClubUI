@@ -26,10 +26,13 @@ export class UserService extends AbstractService {
             password: password
         }
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}v1/login`, user);
-            this.store.$patch({loggedIn: true})
+            const response = await axios.post(`v1/login`, user);
+            if (response.headers["authorization"]) {
+                this.store.$patch({token: response.headers["authorization"]})
+            } else {
+                this.store.$patch({token: response.headers["x-amzn-remapped-authorization"]})
+            }
             this.store.$patch({user: response.data})
-            this.store.$patch({token: response.headers["authorization"]})
             return response.data;
         } catch (e) {
             let errorMessage = `${e}`
