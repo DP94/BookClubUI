@@ -4,4 +4,5 @@ export class BookDto {
     imageSource: string;
     author: string;
     summary: string;
+    memeCount: number;
 }

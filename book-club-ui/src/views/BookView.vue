@@ -1,48 +1,48 @@
-<script>
+<script lang="ts">
 import Navbar from "@/components/Navbar.vue";
-import axios from "axios";
 import {ref} from 'vue'
 import Book from '../components/Book.vue'
 import Meme from "../components/Meme.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import {BookService} from "@/services/book-service";
+import {Options, Vue} from "vue-class-component";
+import {BookDto} from "@/dtos/book-dto";
+import {MemeDto} from "@/dtos/meme-dto";
 
-export default {
-  name: "BookView",
-  components: {LoadingSpinner, Meme, Book, Navbar},
-  setup() {
-    let book = ref();
-    let memes = ref([]);
-    let loading = ref();
-    return {book, memes, loading}
-  },
-  methods: {
-    beforeRouteEnter(x, y, z) {
-      let i = 1;
-      z();
-    },
-    async getBook() {
-      const bookService = new BookService();
-      this.book = await bookService.getBookById(this.$route.query.id);
-      await this.getMemesForBook();
-    },
-    async getMemesForBook() {
-      const bookService = new BookService();
-      this.memes = await bookService.getBookMemes(this.$route.query.id);
-      this.book.memeCount = this.memes.length;
-      this.loading = false;
-    },
-    async onFileChanged(e) {
-      this.loading = true;
-      const formData = new FormData();
-      formData.append('file', e.target.files[0]);
-      const bookService = new BookService();
-      const response = await bookService.createMemeForBook(this.$route.query.id, formData);
-      this.memes.push(response);
-      this.book.memeCount++;
-      this.loading = false;
-    }
-  },
+@Options({
+  components: {Book, Meme, Navbar, LoadingSpinner},
+  name: "BookView"
+})
+export default class BookView extends Vue {
+  book: BookDto = ref(BookDto);
+  memes: Array<MemeDto> = ref([]);
+  loading: boolean = ref(false);
+  memeCount: number = ref(0);
+  
+  async getBook() {
+    const bookService = new BookService();
+    this.book = await bookService.getBookById(this.$route.query.id);
+    await this.getMemesForBook();
+  }
+
+  async getMemesForBook() {
+    const bookService = new BookService();
+    this.memes = await bookService.getBookMemes(this.$route.query.id);
+    this.book.memeCount = this.memes.length;
+    this.loading = false;
+  }
+
+  async onFileChanged(e) {
+    this.loading = true;
+    const formData = new FormData();
+    formData.append('file', e.target.files[0]);
+    const bookService = new BookService();
+    const response = await bookService.createMemeForBook(this.$route.query.id, formData);
+    this.memes.push(response);
+    this.book.memeCount++;
+    this.loading = false;
+  }
+
   created() {
     this.loading = true;
     this.getBook();

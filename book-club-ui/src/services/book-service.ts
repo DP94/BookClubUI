@@ -20,7 +20,7 @@ export class BookService extends AbstractService {
         return response.data;
     }
     
-    async getBookMemes(id: string): Promise<MemeDto> {
+    async getBookMemes(id: string): Promise<MemeDto[]> {
         const response = await axios.get(`v1/Book/${id}/meme`, {
             headers: this.getRequestHeaders()
         });
