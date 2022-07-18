@@ -21,7 +21,7 @@ export default class Navbar extends Vue {
   store = userStore();
   
   onLogout() {
-    this.store.$patch({ token: ''});
+    this.store.$reset();
     this.$router.push('/login');
   }
   
