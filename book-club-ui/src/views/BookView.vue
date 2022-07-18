@@ -89,7 +89,7 @@ export default {
     <button @click="$refs.file.click()">Upload new meme</button>
   </div>
   <div class="meme-container">
-    <Meme v-bind:memeImage="meme.s3URL" v-for="meme in memes"></Meme>
+    <Meme v-bind:memeImage="meme.s3Url" v-bind:uploader="meme.uploadedBy" v-for="meme in memes"></Meme>
   </div>
 </template>
 

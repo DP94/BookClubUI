@@ -3,7 +3,7 @@ export default {
   name: "Meme",
   props: [
       'memeImage',
-      'uploader'
+      'uploader',
   ],
   methods: {
     getMemeImage() {
@@ -17,7 +17,7 @@ export default {
 <template>
   <div class="book-meme">
     <img class="book-meme-image" :src="getMemeImage()"/>
-    <span>Uploaded by: Dan</span>
+    <span>Uploaded by: {{uploader}}</span>
   </div>
 </template>
 

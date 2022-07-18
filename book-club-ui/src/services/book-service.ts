@@ -2,6 +2,7 @@ import axios from "axios";
 import {BookDto} from "@/dtos/book-dto";
 import {userStore} from "@/stores/user-store";
 import {AbstractService} from "@/services/abstract-service";
+import {MemeDto} from "@/dtos/meme-dto";
 
 export class BookService extends AbstractService {
     
@@ -19,14 +20,14 @@ export class BookService extends AbstractService {
         return response.data;
     }
     
-    async getBookMemes(id: string): Promise<any> {
+    async getBookMemes(id: string): Promise<MemeDto> {
         const response = await axios.get(`v1/Book/${id}/meme`, {
             headers: this.getRequestHeaders()
         });
         return response.data;
     }
     
-    async createMemeForBook(id: string, formData: FormData): Promise<any> {
+    async createMemeForBook(id: string, formData: FormData): Promise<MemeDto> {
         const response = await axios.post(`${import.meta.env.VITE_API_URL}v1/Book/${id}/meme`, formData, {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
