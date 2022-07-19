@@ -21,20 +21,20 @@ loading.value = true;
 export default class MainPageView extends Vue {
   
   books: Array<any> = ref([]);
-  loading = ref();
+  loading: boolean = ref(false);
   
   async created() {
     const bookService = new BookService();
-    loading.value = true;
+    this.loading = true;
     this.books = await bookService.getAllBooks();
-    loading.value = false;
+    this.loading = false;
   }
 }
 
 </script>
 
 <template>
-  <LoadingSpinner v-bind:loading="loading"></LoadingSpinner>
+  <LoadingSpinner :loading="loading"></LoadingSpinner>
   <div class="book-container">
     <div class="book" v-for="item in books">
       <Book v-bind:name="item.name" v-bind:bookImage="item.imageSource" v-bind:id="item.id"></Book>

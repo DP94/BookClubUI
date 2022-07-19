@@ -6,6 +6,7 @@ import {ref} from "vue";
 @Options({})
 export default class UserForm extends Vue {
   user: UserDto = ref(UserDto);
+  isRegister: boolean = ref(false);
   
   getUser(): UserDto {
     return this.user;
@@ -14,10 +15,14 @@ export default class UserForm extends Vue {
   setUser(user: UserDto) {
     this.user = user;
   }
+  
+  setIsRegister(isRegister: boolean) {
+    this.isRegister = isRegister;
+  }
 }
 </script>
 <template>
-  <FormKit type="form" v-model="this.user">
+  <FormKit type="form" v-model="this.user" :actions="false">
     <FormKit
         type="text"
         label="Username"
@@ -32,7 +37,7 @@ export default class UserForm extends Vue {
     />
     <FormKit
         type="text"
-        label="Your Email"
+        label="Email"
         name="email"
         prefix-icon="email"                                  
         placeholder="email@domain.com"
@@ -42,7 +47,7 @@ export default class UserForm extends Vue {
         type="password"
         label="Password"
         name="password"
-        validation="required|password"
+        :validation="isRegister ? 'required|password' : ''"
     />
     <FormKit
         type="select"
@@ -50,6 +55,10 @@ export default class UserForm extends Vue {
         name="loyalty"
         placeholder="Praise the emperor?"
         :options="['Loyalist', 'Traitor']"
+    />
+    <FormKit
+        type="submit"
+        :label="isRegister ? 'Register' : 'Update'"
     />
   </FormKit>
 </template>

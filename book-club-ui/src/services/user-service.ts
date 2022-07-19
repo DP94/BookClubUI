@@ -20,6 +20,11 @@ export class UserService extends AbstractService {
         return response.data;
     }
     
+    async updateUser(user: UserDto): Promise<UserDto> {
+        const response = await axios.put(`v1/User/${user.id}`, user);
+        return response.data;
+    }
+    
     async login(username: string, password: string): Promise<UserDto | null> {
         const user = {
             username: username,

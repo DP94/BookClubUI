@@ -3,9 +3,12 @@ import {Options, Vue} from "vue-class-component";
 import {UserService} from "@/services/user-service";
 import {UserDto} from "@/dtos/user-dto";
 import {ref} from "vue";
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
 @Options({
-  name: "UsersView", beforeRouteEnter: (to, from, next) => {
+  name: "UsersView",
+  components: {LoadingSpinner},
+  beforeRouteEnter: (to, from, next) => {
     next(vm => {
       vm.$emit('routeChange');
     });
@@ -15,14 +18,18 @@ import {ref} from "vue";
 export default class UserView extends Vue {
 
   users: UserDto[] = ref([]);
+  loading: boolean = ref(false);
 
   async created() {
+    this.loading = true;
     const service = new UserService();
     this.users = await service.getAllUsers();
+    this.loading = false;
   }
 }
 </script>
 <template>
+  <LoadingSpinner :loading="loading"></LoadingSpinner>
   <div>
     <table style="width:100%;" v-if="users?.length > 0">
       <tr style="background: #8080806e;">
@@ -33,7 +40,7 @@ export default class UserView extends Vue {
         <th>Last book finished</th>
       </tr>
       <tr v-for="(user, index) in users" :class="['user', `user-info-${index % 2 === 0 ? 'even' : 'odd'}`]">
-        <td>
+        <td class="user-image-row">
           <img class="user-profile-pic" src="https://www.w3schools.com/howto/img_avatar.png" alt="Profile picture"/>
         </td>
         <td>
@@ -59,10 +66,14 @@ export default class UserView extends Vue {
   padding: 1%;
 }
 
+.user-image-row {
+  width: 10%;
+}
+
 .user-profile-pic {
   border-radius: 50%;
-  height: 200px;
-  width: 200px;
+  width: 100%;
+  height: 100%;
 }
 
 .user-info-odd {

@@ -11,6 +11,10 @@ import UserForm from "@/components/form/UserForm.vue";
 })
 export default class RegisterView extends Vue {
   loading: boolean = ref();
+
+  mounted() {
+    this.$refs.userform.setIsRegister(true);
+  }
   
   async submitUserForm() {
     const userService = new UserService();
@@ -26,17 +30,7 @@ export default class RegisterView extends Vue {
 
 <template>
   <LoadingSpinner v-bind:loading="loading"></LoadingSpinner>
-  <div class="form-container">
+  <div class="user-form">
     <UserForm v-on:submit="this.submitUserForm()" ref="userform"></UserForm>
   </div>
 </template>
-
-<style scoped>
-
-.form-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 35em;
-}
-</style>

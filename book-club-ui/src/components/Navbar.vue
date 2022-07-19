@@ -5,7 +5,7 @@
     <router-link data-nav-name="profile" to="/user" v-if="store.hasSession()">Profile</router-link>
     <router-link data-nav-name="login" id="login" class="nav-register" to="/login" v-if="!store.hasSession()">Log in</router-link>
     <a data-nav-name="logout" id="logout" class="nav-register" to="/login" @click="onLogout()" v-if="store.hasSession()">Log out</a>
-    <span class="nav-register" v-if="store.loggedIn">{{store.user.username}}</span>
+    <span class="nav-register" v-if="store.hasSession()">{{store.user.username}}</span>
   </div>
 </template>
 
@@ -21,7 +21,7 @@ export default class Navbar extends Vue {
   store = userStore();
   
   onLogout() {
-    this.store.$patch({ token: ''});
+    this.store.$reset();
     this.$router.push('/login');
   }
   
