@@ -26,6 +26,13 @@ export default class UserView extends Vue {
     this.users = await service.getAllUsers();
     this.loading = false;
   }
+
+  getImageSource(user: UserDto) {
+    if (user.profilePictureUrl) {
+      return user.profilePictureUrl;
+    }
+    return "/src/assets/unknown.jpg";
+  }
 }
 </script>
 <template>
@@ -41,7 +48,7 @@ export default class UserView extends Vue {
       </tr>
       <tr v-for="(user, index) in users" :class="['user', `user-info-${index % 2 === 0 ? 'even' : 'odd'}`]">
         <td class="user-image-row">
-          <img class="user-profile-pic" src="https://www.w3schools.com/howto/img_avatar.png" alt="Profile picture"/>
+          <img class="user-profile-pic" :src="getImageSource(user)" alt="Profile picture"/>
         </td>
         <td>
           <p class="user-name">{{ user.username }}</p>
