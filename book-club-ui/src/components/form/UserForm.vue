@@ -32,14 +32,14 @@ export default class UserForm extends Vue {
   }
   
   clearProfilePicture() {
-    this.user.profilePictureUrl = '';
+    this.user.profilePictureS3Url = '';
     this.$refs.profilePic.src = "/src/assets/unknown.jpg";
     this.$refs.profilePicInput.focus();
   }
   
   getImageSource() {
-    if (this.user.profilePictureUrl) {
-      return this.user.profilePictureUrl;
+    if (this.user.profilePictureS3Url) {
+      return this.user.profilePictureS3Url;
     }
     return "/src/assets/unknown.jpg";
   }

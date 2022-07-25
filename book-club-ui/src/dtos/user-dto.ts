@@ -7,7 +7,7 @@ export class UserDto {
     email: string;
     loyalty: string;
     password: string;
-    profilePictureUrl: string;
+    profilePictureS3Url: string;
     profilePicImage: string;
     booksRead: Array<BookDto>;
 }

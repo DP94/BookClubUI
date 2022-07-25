@@ -28,8 +28,8 @@ export default class UserView extends Vue {
   }
 
   getImageSource(user: UserDto) {
-    if (user.profilePictureUrl) {
-      return user.profilePictureUrl;
+    if (user.profilePictureS3Url) {
+      return user.profilePictureS3Url;
     }
     return "/src/assets/unknown.jpg";
   }
@@ -74,7 +74,7 @@ export default class UserView extends Vue {
 }
 
 .user-image-row {
-  width: 10%;
+  width: 70px;
 }
 
 .user-profile-pic {
