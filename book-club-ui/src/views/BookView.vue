@@ -56,7 +56,7 @@ export default class BookView extends Vue {
     store.$patch({user: updatedUser});
     this.loading = false;
     notify({
-      title: `Successfully updated user`,
+      title: `Book marked as finished`,
       type: 'success',
       duration: 3000
     })
@@ -97,7 +97,7 @@ export default class BookView extends Vue {
       </div>
       <div class="buttons">
         <button class="book-reading-button" title="Mark as reading"><i class="fa fa-book-open"></i></button>
-        <button class="book-finished-button" title="Mark as finished" @click="markBookAsReadForUser"><i class="fa fa-square-check"></i></button>
+        <button class="book-finished-button" title="Mark as finished" @click="markBookAsReadForUser()"><i class="fa fa-square-check"></i></button>
       </div>
     </div>
   </div>
