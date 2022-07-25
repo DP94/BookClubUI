@@ -8,6 +8,9 @@ import {BookService} from "@/services/book-service";
 import {Options, Vue} from "vue-class-component";
 import {BookDto} from "@/dtos/book-dto";
 import {MemeDto} from "@/dtos/meme-dto";
+import {userStore} from "@/stores/user-store";
+import {UserService} from "@/services/user-service";
+import {notify} from "@kyvg/vue3-notification";
 
 @Options({
   components: {Book, Meme, Navbar, LoadingSpinner},
@@ -41,6 +44,22 @@ export default class BookView extends Vue {
     this.memes.push(response);
     this.book.memeCount++;
     this.loading = false;
+  }
+
+  async markBookAsReadForUser(){
+    this.loading = true;
+    const store = userStore();
+    const user = store.user;
+    user.booksRead.push(this.book);
+    const userService = new UserService();
+    const updatedUser = await userService.updateUser(user);
+    store.$patch({user: updatedUser});
+    this.loading = false;
+    notify({
+      title: `Successfully updated user`,
+      type: 'success',
+      duration: 3000
+    })
   }
 
   created() {
@@ -78,7 +97,7 @@ export default class BookView extends Vue {
       </div>
       <div class="buttons">
         <button class="book-reading-button" title="Mark as reading"><i class="fa fa-book-open"></i></button>
-        <button class="book-finished-button" title="Mark as finished"><i class="fa fa-square-check"></i></button>
+        <button class="book-finished-button" title="Mark as finished" @click="markBookAsReadForUser"><i class="fa fa-square-check"></i></button>
       </div>
     </div>
   </div>
