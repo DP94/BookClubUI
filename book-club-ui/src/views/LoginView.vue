@@ -25,7 +25,7 @@ export default class LoginView extends Vue {
     if (response !== null) {
       notify({
         title: `Successfully logged in`,
-        text: `Welcome to BookClub ${response.username}`,
+        text: `Welcome to BookClub, ${response.username}`,
         type: 'info',
         duration: 3000
       })

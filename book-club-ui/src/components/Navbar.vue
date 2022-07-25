@@ -54,7 +54,7 @@ export default class Navbar extends Vue {
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
-  font-size: 17px;
+  font-size: 16px;
 }
 
 /* Change the color of links on hover */
