@@ -78,7 +78,7 @@ export default class BookView extends Vue {
       <div class="book-summary">
         <h3>Summary</h3>
         <p>
-          {{ this.book.summary }}
+          {{ this.book.summary }} 
         </p>
         <span>
           <b>
